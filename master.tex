@@ -1,0 +1,64 @@
+\documentclass[a4paper]{ctexrep}
+
+\usepackage[style=utils/caspervector,backend=biber,utf8,sorting=centy]{biblatex}
+\usepackage{fancyhdr}%引入页眉页脚宏
+\usepackage{ifthen}%引入条件判断宏
+\usepackage{array}
+\usepackage{graphicx}%图像处理宏
+\usepackage{geometry}%页面设置宏
+\addbibresource{refs/thesis-ref.bib}
+\ctexset{
+	section/format += \raggedright,
+}
+\geometry{top=3cm,bottom=2cm,left=2.5cm,right=2.5cm}
+\begin{document}
+	%页面信息
+	\include{pagers/message}
+	
+	%封面
+	\include{pagers/cover}
+	
+	%摘要（中英文)
+	\include{pagers/abstractc}
+	\include{pagers/abstracte}
+	
+	%设置页脚为罗马字体
+	\pagenumbering{Roman}
+	\tableofcontents
+	
+	\clearpage
+	
+	%设置页面为双面的
+	\setboolean{@twoside}{true}
+	%\设置页眉样式
+	\pagestyle{fancy}
+	\fancyhf{}
+	\fancyhead[CE]{\thtopic}
+	\fancyhead[CO]{\leftmark}
+	\fancyfoot[C]{-\thepage-}
+	
+	%自定义页面样式
+	\fancypagestyle{plain}{
+		\setboolean{@twoside}{true}
+		\fancyhf{}
+		\fancyhead[CE]{\thtopic}
+		\fancyhead[CO]{\leftmark}
+		\fancyfoot[C]{-\thepage-}
+	}
+
+	%设置正文页面
+	\pagenumbering{arabic}
+	%绪论
+	\include{pagers/intro}
+	
+	%论文主体内容
+	\include{pagers/charpt2}
+	\include{pagers/charpt3}
+	\include{pagers/charpt4}
+	\include{pagers/charpt5}
+	
+	%参考文献
+	\include{pagers/ref}
+	%致谢
+	%\include{pagers/ack}
+\end{document}
