@@ -6,5 +6,5 @@
 *.log
 *.pdf
 *.xml
-*.gz
 *.toc
+master.synctex.gz

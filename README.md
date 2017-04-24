@@ -1,5 +1,5 @@
 # NorthWestThesis
-本科生毕业设计Latex的模板文件
+西北农林科技大学本科生毕业论文Latex的模板
 
 ## 目录结构如下
 - figures 资源文件存放目录

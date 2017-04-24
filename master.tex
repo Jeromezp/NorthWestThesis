@@ -1,4 +1,4 @@
-\documentclass[a4paper,twoside]{ctexrep}
+\documentclass[a4paper,twoside,linespread=1.5]{ctexrep}
 
 \usepackage[style=utils/caspervector,backend=biber,utf8,sorting=centy]{biblatex}
 \usepackage{fancyhdr}%引入页眉页脚宏
@@ -6,11 +6,19 @@
 \usepackage{array}
 \usepackage{graphicx}%图像处理宏
 \usepackage{geometry}%页面设置宏
+\usepackage{fontspec}
+%\usepackage{setspace}%设置间距宏
 \addbibresource{refs/thesis-ref.bib}
 \ctexset{
 	section/format += \raggedright,
+	contentsname = 目 \ 录,
+	chapter/fixbeforeskip = true,
 }
+%设置纸张
 \geometry{top=3cm,bottom=2cm,left=2.5cm,right=2.5cm}
+%设置默认应为字体
+\setmainfont{Times New Roman}
+
 \begin{document}
 	%页面信息
 	\include{pagers/message}
@@ -28,8 +36,6 @@
 	
 	\clearpage
 	
-	%设置页面为双面的
-	%\setboolean{@twoside}{true}
 	%\设置页眉样式
 	\pagestyle{fancy}
 	\fancyhf{}
@@ -39,7 +45,6 @@
 	
 	%自定义页面样式
 	\fancypagestyle{plain}{
-		%\setboolean{@twoside}{true}
 		\fancyhf{}
 		\fancyhead[CE]{\thtopic}
 		\fancyhead[CO]{\leftmark}
