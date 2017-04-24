@@ -1,6 +1,7 @@
+#temp file
 *.aux
 *.bbl
-*.bfc
+*.bcf
 *.blg
 *.log
 *.pdf
