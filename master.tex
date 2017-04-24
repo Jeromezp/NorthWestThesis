@@ -1,4 +1,4 @@
-\documentclass[a4paper]{ctexrep}
+\documentclass[a4paper,twoside]{ctexrep}
 
 \usepackage[style=utils/caspervector,backend=biber,utf8,sorting=centy]{biblatex}
 \usepackage{fancyhdr}%引入页眉页脚宏
@@ -29,7 +29,7 @@
 	\clearpage
 	
 	%设置页面为双面的
-	\setboolean{@twoside}{true}
+	%\setboolean{@twoside}{true}
 	%\设置页眉样式
 	\pagestyle{fancy}
 	\fancyhf{}
@@ -39,7 +39,7 @@
 	
 	%自定义页面样式
 	\fancypagestyle{plain}{
-		\setboolean{@twoside}{true}
+		%\setboolean{@twoside}{true}
 		\fancyhf{}
 		\fancyhead[CE]{\thtopic}
 		\fancyhead[CO]{\leftmark}
@@ -60,5 +60,5 @@
 	%参考文献
 	\include{pagers/ref}
 	%致谢
-	%\include{pagers/ack}
+	\include{pagers/ack}
 \end{document}
