@@ -6,6 +6,7 @@
 \usepackage{graphicx}%图像处理宏
 \usepackage{geometry}%页面设置宏
 \usepackage{fontspec}
+%\usepackage[CJKbookmarks=true]{hyperref}
 %\usepackage{setspace}%设置间距宏
 \addbibresource{refs/thesis-ref.bib}
 \ctexset{
@@ -17,7 +18,22 @@
 \geometry{top=3cm,bottom=2cm,left=2.5cm,right=2.5cm}
 %设置默认应为字体
 \setmainfont{Times New Roman}
+\usepackage[titles]{tocloft}
+\renewcommand{\cftdot}{$\cdot$}
+\renewcommand{\cftdotsep}{1.5}
+\setlength{\cftbeforechapskip}{10pt}
 
+\renewcommand{\cftchapleader}{\cftdotfill{\cftchapdotsep}}
+\renewcommand{\cftchapdotsep}{\cftdotsep}
+
+\makeatletter
+\renewcommand{\numberline}[1]{%
+	\settowidth\@tempdimb{#1\hspace{0.5em}}%
+	\ifdim\@tempdima<\@tempdimb%
+	\@tempdima=\@tempdimb%
+	\fi%
+	\hb@xt@\@tempdima{\@cftbsnum #1\@cftasnum\hfil}\@cftasnumb}
+\makeatother
 \begin{document}
 	%页面信息
 	\include{pagers/message}
@@ -31,7 +47,17 @@
 	
 	%设置页脚为罗马字体
 	\pagenumbering{Roman}
+	
 	\tableofcontents
+	
+	%设置目录页样式（第二页）
+	\fancypagestyle{plain}{
+		\fancyhf{}
+		\fancyfoot[C]{ \thepage}
+		\renewcommand{\headrulewidth}{0pt}
+		\renewcommand{\footrulewidth}{0pt}
+	}
+	\thispagestyle{plain}
 	
 	\clearpage
 	
@@ -61,6 +87,7 @@
 	\include{pagers/charpt4}
 	\include{pagers/charpt5}
 	
+	\newpage
 	%参考文献
 	\include{pagers/ref}
 	%致谢
