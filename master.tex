@@ -6,13 +6,14 @@
 \usepackage{graphicx}%图像处理宏
 \usepackage{geometry}%页面设置宏
 \usepackage{fontspec}
-%\usepackage[CJKbookmarks=true]{hyperref}
+\usepackage{indentfirst}
 %\usepackage{setspace}%设置间距宏
 \addbibresource{refs/thesis-ref.bib}
 \ctexset{
 	section/format += \raggedright,
 	contentsname = 目 \ 录,
 	chapter/fixbeforeskip = true,
+	part/fixbeforeskip = true
 }
 %设置纸张
 \geometry{top=3cm,bottom=2cm,left=2.5cm,right=2.5cm}
@@ -37,6 +38,8 @@
 \begin{document}
 	%页面信息
 	\include{pagers/message}
+	%设置页面信息
+	\graphicspath{{figures/}}
 	
 	%封面
 	\include{pagers/cover}
@@ -86,7 +89,7 @@
 	\include{pagers/charpt3}
 	\include{pagers/charpt4}
 	\include{pagers/charpt5}
-	
+	\include{pagers/charpt6}
 	\newpage
 	%参考文献
 	\include{pagers/ref}
