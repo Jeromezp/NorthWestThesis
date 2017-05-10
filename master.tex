@@ -6,8 +6,8 @@
 \usepackage{graphicx}%图像处理宏
 \usepackage{geometry}%页面设置宏
 \usepackage{fontspec}
-\usepackage{indentfirst}
-%\usepackage{setspace}%设置间距宏
+\usepackage{indentfirst}%缩进宏
+\usepackage{hyperref}%目录跳转宏
 \addbibresource{refs/thesis-ref.bib}
 \ctexset{
 	section/format += \raggedright,
@@ -15,6 +15,9 @@
 	chapter/fixbeforeskip = true,
 	part/fixbeforeskip = true
 }
+
+%设置跳转链接样式
+\hypersetup{hidelinks}
 %设置纸张
 \geometry{top=3cm,bottom=2cm,left=2.5cm,right=2.5cm}
 %设置默认应为字体
