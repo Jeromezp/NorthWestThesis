@@ -21,4 +21,20 @@
 ## TODO
 - 进一步将样式和内容分离
 - 优化文档结构
-- 自定义宏
+- 自定义样式库
+
+## 常用Latex命令
+`\\` 换行
+
+`\indent` 缩进
+
+`\noindent` 不进行缩进
+
+引入插图
+```
+\begin{figure}[!hbp]
+\centering
+\includegraphics[width=0.7\textwidth]{图片名称}
+\caption{标题名称}\label{fig1}
+\end{figure}
+```
