@@ -7,4 +7,5 @@
 *.pdf
 *.xml
 *.toc
+*.out
 master.synctex.gz
