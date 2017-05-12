@@ -1,11 +1,176 @@
 \chapter{基因组浏览器环境搭建与配置}
 	\chaptermark{基因组浏览器环境搭建与配置}
 	\section{GBrowse搭建与配置}
-	\subsection{操作系统安装与配置}
-	\subsection{源码安装Apache与MySQL}
+	
+	\subsection{服务端平台选取及环境需求}
+	GBrowse作为跨平台的Web基因组可视化工具，既可以运行在Windows平台上也可以运行在Linux平台上，由于Linux具有完善的网络配置，稳定的执行性能，多用户多任务，具有良好的开放性和兼容性，所以选取Linux中的Ubuntu系列作为服务平台。Apache是世界使用排名第一的Web服务器软件。它可以运行在几乎所有广泛使用的计算机平台上，由于其跨平台和安全性被广泛使用，是最流行的Web服务器端软件之一，因此选取Apache作为Web服务器软件，选取MySQL作为数据存储软件。GBrowse安装时需要的环境需求有，CMake编译工具，Boost编译环境，Perl运行环境，Perl CGI模块，Perl Bio模块，FastCGI模块，MySQL模块，GD库文件等30余种模块的支持。本文将软件源码及安装目录分别指定在/usr/local/src和/usr/local/目录下。
+	\subsection{源码编译安装Apache与MySQL}
+		\subsubsection{（1）源码编译安装优势}
+		编译安装可以自定义Apache及MySQL的功能，优化相应的编译参数，提高软件运行性能，利于解决不必要的软件依赖问题，易于管理和维护软件。
+		\subsubsection{（2）源码编译的步骤}
+		首先，配置相关文件，通常依赖GCC，Binutils，Glibc编译器；检查配置软件特性，检查编译环境，生成Makefile文件。其次编译测试软件，发现软件依赖。最后安装软件并清除编译环境。对于Apache及MySQL考虑到服务器的安全性，需要创建对应的Apache及MySQL用户及用户组进行权限的限制。创建用户的同时需要设置其不能通过shell进入登录。具体操作如下。
+		\begin{lstlisting}[language=bash]
+		groupadd apache
+		useradd -g apache apache -s /bin/false
+		groupadd mysql
+		useradd -g mysql mysql -s /bin/false
+		\end{lstlisting}
+		\subsubsection{（3）Apache源码编译}
+		Apache依赖于apr, apr-util，pcre-devel，openssl-devel。在编译前需要先对这些软件包进行安装，避免产生编译时出现错误的情况。源码编译时需要对编译器进行安装，在本文中使用GCC编译器进行编译，对于编译器应选择版本较高的，在编译软件时较高版本的编译器能有效地将软件的新特性进行加载和编译。如下面命令进行包安装。
+		\begin{lstlisting}[language=bash]
+		sudo apt-get install apr apr-util pcre-devel openssl-devel gcc
+		\end{lstlisting}
+		首先需要对源码包进行解压并将目录的切换到源码目录下，其次对软件进行配置，Apache的配置选项众多，许多配置选项的开启与否决定着Apache是否加载相应的功能模块以及取消相关模块的功能。在最新的Apache的版本中，默认将会一些模块设置为自动编译，只需配置部分选项参数即可，比如prefix选项参数决定着软件的安装目录，enable-module选项参数决定着开启开启Apache动态加载动态链接库模块。如表3.1各个选项参数的具体含义。
+		\begin{table}[!htbp]
+			\centering
+			\begin{tabular}{ll}	
+				\toprule
+				选项名称& 含义\\
+				\midrule
+				--build&定义正在构建工具的系统的系统类型。它默认为脚本的结果 config.guess。\\
+				--host&定义服务器运行的系统的系统类型。 HOST默认为BUILD。\\
+				--target&为系统类型TARGET构建编译器 。它默认为HOST。\\
+				--prefix& 指定Apache的安装目录前缀\\
+				--enable-module&相应的模块将构建为DSO模块\\
+				--enable-deflate&开启网页压缩\\
+				--enable-rewrite&开启http重写\\
+				--enable-file-cache&开启文件缓存\\
+				--enable-cache&开启缓存\\
+				\bottomrule
+			\end{tabular}
+		\caption{Apache选项参数}
+		\end{table}
+	最后，就可以进行软件的编译安装测试及清理编译产生的中间文件。具体的操作如下。
+	\begin{lstlisting}[language=bash]
+		tar xf httpd-2.4.9.tar.bz2
+		./configure --prefix=/usr/local/apache --sysconfdir=/etc/httpd24\
+		--enable-so --enable-ssl --enable-cgi  --enable-rewrite\
+		--with-zlib --with-pcre --with-mpm=prefork\
+		--enable-modules=most --enable-mpms-shared=all
+		make && make test && make install && make clean
+	\end{lstlisting}
+	\subsubsection{（4）MySQL源码编译}
+	MySQL编译依赖的环境CMake编译器及Boost头文件，本文通过编译安装的方式安装最新的版本。\\
+	\indent 进行CMake编译器编译安装，首先需解压并进入源码包目录，其次进行编译配置，再次进行软件的编译安装测试及清理编译安装产生的中间文件，最后修改Linux的环境变量，是CMake工具可以在整个环境下进行使用。具体的操作如下。\\
+	\begin{lstlisting}[language=bash]
+	tar -xzvf cmake-3.8.0.tar.gz
+	cd cmake-3.8.0/
+	./configure --prefix=/usr/local/cmake
+	make && make install
+	echo 'export PATH=/usr/local/cmake/bin:$PATH' >> /etc/profile
+	source /etc/profile
+	\end{lstlisting}
+	\indent 进行Boost软件包的编译安装，首先需解压并进入源码包目录，然后执行相应的安装脚本即可。具体的操作如下。\\
+	\begin{lstlisting}[language=bash]
+	tar xzvf boost_1_59_0.tar.gz
+	cd boost_1_59_0/
+	./bootstrap.sh
+	./b2 install
+	\end{lstlisting}
+	\indent MySQL源码安装之前，需要创建其日志文件，sock文件，数据存放文件的路径并设置合理的权限。然后进行相应的软件包解压并进入，使用CMake编译器进行编译安装，需要对CMake编译器编译MySQL的部分选项参数设置，比如DCMAKE\_INSTALL\_PREFIX参数决定MySQL的安装目录，参数详情见表3.2。最后进行软件的编译安装测试及清理编译安装产生的中间文件。具体的操作如下。\\
+	\begin{table}[!htbp]
+		\centering
+		\begin{tabular}{ll}	
+			\toprule
+			选项名称& 含义\\
+			\midrule
+			-DCMAKE\_INSTALL\_PREFIX&安装目录\\
+			-DMYSQL\_UNIX\_ADDR&sock文件路径\\
+			-DDEFAULT\_CHARSET&sock文件路径 \\
+			-DWITH\_INNOBASE\_STORAGE\_ENGINE&安装INNODB\\
+			-DWITH\_ARCHIVE\_STORAGE\_ENGINE&存储引擎可用值\\
+			-DWITH\_BLACKHOLE\_STORAGE\_ENGINE&存储引擎可用值\\
+			-DMYSQL\_TCP\_PORT&MySQL监听端口\\
+			-DMYSQL\_DATADIR&设置MySQL数据存放目录\\
+			\bottomrule
+		\end{tabular}
+		\caption{MySQL选项参数}
+	\end{table}\\
+	\begin{lstlisting}[language=bash]
+	mkdir -p /usr/local/mysql
+	mkdir -p /var/mysql/data
+	mkdir -p /usr/local/mysql/log
+	chown -R mysql:mysql /var/mysql/
+	chown -R mysql:mysql /usr/local/mysql/log
+	tar -zxvf mysql-boost-5.7.18.tar.gz
+	cd mysql-5.7.18
+	cmake \
+	-DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
+	-DMYSQL_UNIX_ADDR=/usr/local/mysql/mysql.sock \
+	-DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci \
+	-DWITH_INNOBASE_STORAGE_ENGINE=1 \
+	-DWITH_ARCHIVE_STORAGE_ENGINE=1 \
+	-DWITH_BLACKHOLE_STORAGE_ENGINE=1 \
+	-DMYSQL_DATADIR=/var/mysql/data\
+	-DMYSQL_TCP_PORT=3306\
+	-DENABLE_DOWNLOADS=1
+	make && make install
+	\end{lstlisting}
+	\subsubsection{（5）GBrowse安装}
+	在安装GBrowse之前，需要安装Perl的相应模块最为GBrowse运行的前提条件，比如GBrowse依赖Perl的Perl-CGI-Session包是进行客户端和服务端进行通信不能缺少的包。准备工作做完了之后，可以进行安装。本文采用Perl的包管理工具CPAN进行安装，一方面可以安装到最新的GBrowse，另一方面CPAN能很好地解决软件依赖问题减少出错次数。具体做法如下。
+	\begin{lstlisting}[language=bash]
+	sudo perl -MCPAN -e 'install GD Module::Build IO::String\
+	Capture::Tiny CGI::Session\
+	JSON JSON::Any libwww::perl DBD::SQLite\
+	File::NFSLock Net::SMTP::SSL Crypt::SSLeay\
+	Net::SSLeay Template::Toolkit\
+	Bio::Perl Bio::Graphics GD DBD::mysql\
+	GD::SVG DBI DBD::Pg Digest::MD5\
+	Statistics::Descriptive Template'
+	sudo perl -MCPAN -e 'Bio::Graphics::Browser2'
+	\end{lstlisting}
 	\subsection{GBrowse全局配置文件编写}
+	GBrowse安装成功后需要编写部分配置文件才能运行，当HTTP请求向服务器进行访问时GBrowse首先会先
+	加载全局配置文件，通过读取全局配置文件的配置选项和指定的数据源配置文件加载需要可视化的数据，
+	对数据进行渲染可视化。GBrowse的配置文件安装录所在位置/etc/gbrowse2/GBrowse.conf，
+	其他具体目录及见表3.3。在全局配置文件中需要添加通用设置，Session设置，数据库连接设置等一系列设置。
+	如下面的对部分全局配置文件的编写。
+	\begin{table}[!htbp]
+		\centering
+		\begin{tabular}{ll}	
+			\toprule
+			选项名称& 含义\\
+			\midrule
+			/var/www/gbrowse2&文档信息及示例\\
+			/etc/gbrowse2/&配置文件目录\\
+			/etc/gbrowse2/GBrowse.conf&全局配置文件\\
+			/var/lib/gbrowse2/databases&加载到内存数据文件 \\
+			/usr/lib/cgi-bin/gb2/gbrowse&CGI脚本\\
+			/tmp/gbrowse2&临时文件夹。存储Session信息及图片信息\\
+			\bottomrule
+		\end{tabular}
+		\caption{GBrowse安装目录及意义}
+	\end{table}
+	\begin{lstlisting}[language=bash]
+	[GENERAL]
+	config_base   = /etc/gbrowse2   
+	htdocs_base   = /var/www/gbrowse2
+	url_base     = /gbrowse2
+	db_base     = /var/www/gbrowse2/databases
+	tmp_base    = /var/tmp/gbrowse2
+	\end{lstlisting}
 	\subsection{GBrowse苹果基因组配置文件编写}
+	GBrowse显示苹果基因组可视化结果，需要自定义苹果基因组的配置文件，用于设置苹果基因组
+	可视化方式及相关基因信息。其中配置文件编写可以分为两个步骤，创建苹果基因组配置文件，
+	全局配置文件与苹果基因组配置文件关联。如下面分别对全局配置文件及数据配置文件的配置信息。
+	\begin{lstlisting}[language=bash]
+	[GENERAL]
+	config_base   = /etc/gbrowse2   
+	htdocs_base   = /var/www/gbrowse2
+	url_base     = /gbrowse2
+	db_base     = /var/www/gbrowse2/databases
+	tmp_base    = /var/tmp/gbrowse2
+	\end{lstlisting}
+	
 	\subsection{全局配置Apache与GBrowse进行模块关联}
+	是Apache能够正确加载GBrowse相关的功能组件，必须将GBrowse和Apache进行关联。
+	通过对Apache添加有关GBrowse的配置文件。其中配置文件编写可以分为两个步骤，向Apache
+	的全局配置文件中添加对于GBrowse配置文件的引用，编写GBrowse配置文件。
 	\subsection{全局配置MySQL与GBrowse进行模块关联}
+	GBrowse默认是通过加载内存中的基因组数据，当数据量太大时容易造成内存溢出的现象，
+	并且影响到其他应用的正常运行，所以使用MySQL存储数据能良好的解决这个问题。
+	配置GBrowses全局配置文件及数据配置文件，在全局配置文件中开启MySQL连接适配器，
+	在数据配置文件中选择合适的数据库连接接口。
 	\section{JBrowse搭建与配置}
 	\section{UCSC Genome Browser搭建与配置}
+	\subsection{服务端平台选取及环境需求}
