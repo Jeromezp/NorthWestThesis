@@ -150,8 +150,8 @@
 	tmp_base    = /var/tmp/gbrowse2
 	\end{lstlisting}
 	\subsection{GBrowse苹果基因组配置文件编写}
-	GBrowse显示苹果基因组可视化结果，需要自定义苹果基因组的配置文件，用于设置苹果基因组
-	可视化方式及相关基因信息。其中配置文件编写可以分为两个步骤，创建苹果基因组配置文件，
+	GBrowse显示苹果基因组可视化结果，需要自定义苹果基因组数据源配置文件，用于设置苹果基因组
+	可视化方式及相关基因信息配置。其中配置文件编写可以分为两个步骤，创建苹果基因组配置文件，
 	全局配置文件与苹果基因组配置文件关联。如下面分别对全局配置文件及数据配置文件的配置信息。
 	\begin{lstlisting}[language=bash]
 	[GENERAL]
@@ -165,12 +165,37 @@
 	\subsection{全局配置Apache与GBrowse进行模块关联}
 	是Apache能够正确加载GBrowse相关的功能组件，必须将GBrowse和Apache进行关联。
 	通过对Apache添加有关GBrowse的配置文件。其中配置文件编写可以分为两个步骤，向Apache
-	的全局配置文件中添加对于GBrowse配置文件的引用，编写GBrowse配置文件。
+	的全局配置文件中添加对于GBrowse配置文件的引用，编写GBrowse配置文件。如下面代码分别对
+	Apache及GBrowse进行配置。
 	\subsection{全局配置MySQL与GBrowse进行模块关联}
 	GBrowse默认是通过加载内存中的基因组数据，当数据量太大时容易造成内存溢出的现象，
 	并且影响到其他应用的正常运行，所以使用MySQL存储数据能良好的解决这个问题。
 	配置GBrowses全局配置文件及数据配置文件，在全局配置文件中开启MySQL连接适配器，
-	在数据配置文件中选择合适的数据库连接接口。
+	在数据配置文件中选择合适的数据库连接接口。如下面代码分别对
+	MySQL及GBrowse进行配置。
 	\section{JBrowse搭建与配置}
+	\subsection{JBrowse搭建}
+	JBrowse依赖的环境与GBrowse相似，可以说是GBrowse的子集，安装过GBrowse的依赖环境就
+	无需再安装JBrowse的依赖环境。只需解压JBrowse的源码包并进入目录，执行安装脚本即可。
+	JBrowse主要在客户端进行可视化处理，因此对于Web服务器要求不高，只需将安装后的软件包放置到
+	Web服务器的根目录。
+	\begin{lstlisting}[language=bash]
+	sudo mkdir /var/www/jbrowse 
+	sudo chown apache /var/www/jbrowse
+	cd /var/www/jbrowse;
+	curl -O http://jbrowse.org/releases/JBrowse-1.12.3.zip
+	unzip JBrowse-1.12.3.zip
+	cd JBrowse-1.12.3
+	./setup.sh
+	\end{lstlisting}
+	
 	\section{UCSC Genome Browser搭建与配置}
-	\subsection{服务端平台选取及环境需求}
+	\subsection{UCSC Genome Browser搭建}
+	JBrowse依赖的环境与GBrowse相似，依赖于服务端软件Apache数据存储软件MySQL，这些软件的安装在第一小节都有概述。具体的安装方法只需下载浏览器的相应的文件，放置到Web服务器的根目录，通过设置相应目录的权限使用户能通过浏览器浏览到可视化结果。
+	\begin{lstlisting}[language=bash]
+	mkdir -p /var/www/genomebrowser/cgi-bin
+	rsync -avzP rsync://hgdownload.cse.ucsc.edu/cgi-bin/ \
+	 /var/www/genomebrowser/cgi-bin/
+	chown -R apache:apache cgi-bin
+	\end{lstlisting}
+	
