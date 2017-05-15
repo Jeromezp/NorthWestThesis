@@ -1,13 +1,13 @@
 \documentclass[a4paper,twoside,linespread=1.5]{ctexrep}
 
-\usepackage[style=utils/caspervector,backend=biber,utf8,sorting=centy]{biblatex}
+\usepackage[hyperref=true,style=utils/caspervector,backend=biber,utf8,sorting=centy]{biblatex}
 \usepackage{fancyhdr}%引入页眉页脚宏
 \usepackage{array}
 \usepackage{graphicx}%图像处理宏
 \usepackage{geometry}%页面设置宏
 \usepackage{fontspec}
 \usepackage{indentfirst}%缩进宏
-\usepackage{hyperref}%目录跳转宏
+\usepackage[bookmarksopen=true,bookmarksnumbered=true]{hyperref}%目录跳转宏
 \usepackage{xcolor}%代码高亮宏
 \usepackage{listings}%代码插入宏
 \usepackage[titles]{tocloft}%目录设置宏
@@ -21,7 +21,6 @@
 	contentsname = 目 \ 录,
 	chapter/fixbeforeskip = true,
 	part/fixbeforeskip = true,
-	%subsubsection/nameformat = \large \songti,
 }
 
 %listings宏代码样式设置
@@ -34,7 +33,6 @@
 	rulesepcolor=\color{red!20!green!20!blue!20},
 	tabsize = 2
 }
-
 
 \hypersetup{hidelinks}%设置跳转链接样式
 \geometry{top=3cm,bottom=2cm,left=2.5cm,right=2.5cm}%设置纸张
@@ -55,6 +53,8 @@
 	\fi%
 	\hb@xt@\@tempdima{\@cftbsnum #1\@cftasnum\hfil}\@cftasnumb}
 \makeatother
+
+
 \begin{document}
 	%页面信息
 	\include{pagers/message}
