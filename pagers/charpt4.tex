@@ -63,10 +63,12 @@
 		\caption{GBrowse数据库接口}
 	\end{table}
 	\subsection{数据库表结构}
+	转储数据中有九张表分别是feature存放GFF3每一列的数据内容，attribute存放GFF3中最后一列attribute内容，name存放别名信息，parent2child存放基因之间的继承关系，
+	sequence存放基因序列及偏移量信息，attributelist存放属性id及标识，typelist存放基因类型列表，meta存放基因键值对信息，locationlist存放基因序列名称，interval\_stats存放基因类型id及基因序列id。如表4.1数据库模型图。
 	\begin{figure}
 		\centering
-		\includegraphics[width = .6\textwidth]{4-1.png}
-		\caption{GBrowse页面内容展示图}
+		\includegraphics[width = .4\textwidth]{4-1.png}
+		\caption{GBrowse数据库模型图}
 	\end{figure}
 	\subsection{转储操作}
 	在转储苹果基因组操作中，首先创建苹果基因数据库malus，其次通过使用GBrowse中提供bp\_seqfeature\_load脚本工具创建和录入GFF3数据到MySQL数据中。需要对脚本相关选项参数进行配置。参数详情见表4.4。最后通过配置数据库权限，使服务器能读取数据。详细处理代码如下。\\

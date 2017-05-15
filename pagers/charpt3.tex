@@ -85,7 +85,8 @@
 			\bottomrule
 		\end{tabular}
 		\caption{MySQL选项参数}
-	\end{table}\\
+	\end{table} \\
+
 	\begin{lstlisting}[language=bash]
 	mkdir -p /usr/local/mysql
 	mkdir -p /var/mysql/data
@@ -120,11 +121,9 @@
 	sudo perl -MCPAN -e 'Bio::Graphics::Browser2'
 	\end{lstlisting}
 	\subsection{GBrowse全局配置文件编写}
-	GBrowse安装成功后需要编写部分配置文件才能运行，当HTTP请求向服务器进行访问时GBrowse首先会先
-	加载全局配置文件，通过读取全局配置文件的配置选项和指定的数据源配置文件加载需要可视化的数据，
-	对数据进行渲染可视化。GBrowse的配置文件安装录所在位置/etc/gbrowse2/GBrowse.conf，
-	其他具体目录及见表3.3。在全局配置文件中需要添加通用设置，Session设置，数据库连接设置等一系列设置。
-	如下面的对部分全局配置文件的编写。
+	GBrowse中分为两种配置文件一种是全局配置文件，一种是数据源配置文件。全局配置文件用于对GBrowse进行通用设置，比如对GBrowse数据存放的指定，数据源配置文件用于配置基因组数据信息，比如数据源采用的数据存储适配器等。
+
+	GBrowse安装成功后需要编写部分配置文件才能运行，当HTTP请求向服务器进行访问时GBrowse首先会先加载全局配置文件，通过读取全局配置文件的配置选项和指定的数据源配置文件加载需要可视化的数据，对数据进行渲染可视化。GBrowse的配置文件安装录所在位置/etc/gbrowse2/GBrowse.conf，其他具体目录及见表3.3。在全局配置文件中需要添加通用设置，Session设置，数据库连接设置等一系列设置。如下面的对部分全局配置文件的编写。
 	\begin{table}[!htbp]
 		\centering
 		\begin{tabular}{ll}	
@@ -164,15 +163,43 @@
 	
 	\subsection{全局配置Apache与GBrowse进行模块关联}
 	是Apache能够正确加载GBrowse相关的功能组件，必须将GBrowse和Apache进行关联。
-	通过对Apache添加有关GBrowse的配置文件。其中配置文件编写可以分为两个步骤，向Apache
-	的全局配置文件中添加对于GBrowse配置文件的引用，编写GBrowse配置文件。如下面代码分别对
-	Apache及GBrowse进行配置。
+	通过对Apache添加有关GBrowse的配置文件。其中配置文件编写可以分为两个步骤，向Apache的全局配置文件中添加对于GBrowse配置文件的引用，编写GBrowse配置文件。如下面代码对Apache进行配置。
+	\begin{lstlisting}[language=bash]
+	<Directory "/usr/share/gbrowse/htdocs">
+	AllowOverride Options
+	Options -Indexes -MultiViews +FollowSymLinks
+	Order allow,deny
+	Allow from all
+	</Directory>
+	<Directory "/usr/share/gbrowse/htdocs/tutorial">
+	Options +Indexes
+	</Directory>
+	<Directory "/var/cache/gbrowse/images/">
+	Order allow,deny
+	Allow from all
+	</Directory>
+	<Directory "/var/lib/gbrowse/databases">
+	Order allow,deny
+	Deny from all
+	</Directory>
+	<Directory "/usr/lib/cgi-bin/gbrowse">
+	Options ExecCGI
+	SetEnv GBROWSE_CONF   "/etc/gbrowse"
+	</Directory>
+	\end{lstlisting}
 	\subsection{全局配置MySQL与GBrowse进行模块关联}
 	GBrowse默认是通过加载内存中的基因组数据，当数据量太大时容易造成内存溢出的现象，
 	并且影响到其他应用的正常运行，所以使用MySQL存储数据能良好的解决这个问题。
-	配置GBrowses全局配置文件及数据配置文件，在全局配置文件中开启MySQL连接适配器，
-	在数据配置文件中选择合适的数据库连接接口。如下面代码分别对
-	MySQL及GBrowse进行配置。
+	配置GBrowses数据配置文件，在数据配置文件中指定MySQL连接适配器，并设置配置数据库相应的信息。如下面代码对GBrowse数据配置文件进行配置。
+	\\
+	\begin{lstlisting}[language=bash]
+	[alternative:database]
+	db_adaptor    = Bio::DB::SeqFeature::Store
+	db_args       = -adaptor DBI::mysql
+	-dsn    dbi:mysql:database=malus_chr5_alternative;host=localhost
+	-user   root
+	-pass   root
+	\end{lstlisting}
 	\section{JBrowse搭建与配置}
 	\subsection{JBrowse搭建}
 	JBrowse依赖的环境与GBrowse相似，可以说是GBrowse的子集，安装过GBrowse的依赖环境就
