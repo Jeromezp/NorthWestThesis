@@ -12,7 +12,7 @@
 \usepackage{listings}%代码插入宏
 \usepackage[titles]{tocloft}%目录设置宏
 \usepackage{booktabs}%设置表格
-
+\usepackage{caption2}
 \addbibresource{refs/thesis-ref.bib}%参考文献数据库文件
 
 %ctex宏样式全局设置
@@ -22,18 +22,21 @@
 	chapter/fixbeforeskip = true,
 	part/fixbeforeskip = true,
 }
-
+\newfontfamily{\myarial}{Arial}
 %listings宏代码样式设置
 \lstset{
+	columns=flexible,
 	numbers=none,
-	stringstyle=\ttfamily,
+	basicstyle=\myarial \normalsize,
 	keywordstyle=\color{blue!70}, 
 	commentstyle=\color{red!50!green!50!blue!50},
 	frame=shadowbox,
 	rulesepcolor=\color{red!20!green!20!blue!20},
 	tabsize = 2
 }
-
+\renewcommand{\thefigure}{\thechapter-\arabic{figure}}%标题序号设置
+\renewcommand{\captionlabeldelim}{~}
+\renewcommand{\captionfont}{\normalsize \heiti} 
 \hypersetup{hidelinks}%设置跳转链接样式
 \geometry{top=3cm,bottom=2cm,left=2.5cm,right=2.5cm}%设置纸张
 \setmainfont{Times New Roman}%设置默认应为字体
