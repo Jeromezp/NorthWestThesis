@@ -8,4 +8,5 @@
 *.xml
 *.toc
 *.out
+*_con.tex
 master.synctex.gz
