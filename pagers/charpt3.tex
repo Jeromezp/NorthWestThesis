@@ -200,7 +200,7 @@
 	-user   root
 	-pass   root
 	\end{lstlisting}
-	\section{JBrowse搭建与配置}
+	\section{其它基因组浏览器的环境搭建与配置}
 	\subsection{JBrowse搭建}
 	JBrowse依赖的环境与GBrowse相似，可以说是GBrowse的子集，安装过GBrowse的依赖环境就
 	无需再安装JBrowse的依赖环境。只需解压JBrowse的源码包并进入目录，执行安装脚本即可。
@@ -215,9 +215,8 @@
 	cd JBrowse-1.12.3
 	./setup.sh
 	\end{lstlisting}
-	
-	\section{UCSC Genome Browser搭建与配置}
-	\subsection{UCSC Genome Browser搭建}
+
+	\subsection{UCSC Genome Browser搭建与配置}
 	JBrowse依赖的环境与GBrowse相似，依赖于服务端软件Apache数据存储软件MySQL，这些软件的安装在第一小节都有概述。具体的安装方法只需下载浏览器的相应的文件，放置到Web服务器的根目录，通过设置相应目录的权限使用户能通过浏览器浏览到可视化结果。
 	\begin{lstlisting}[language=bash]
 	mkdir -p /var/www/genomebrowser/cgi-bin
