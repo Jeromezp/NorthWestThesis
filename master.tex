@@ -1,4 +1,4 @@
-\documentclass[a4paper,twoside,linespread=1.5]{ctexrep}
+\documentclass[a4paper,twoside,linespread=1.5,zihao=-4]{ctexrep}
 
 \usepackage[style=caspervector,backend=biber,utf8,sorting=centy]{biblatex}
 \usepackage{fancyhdr}%引入页眉页脚宏
@@ -12,16 +12,23 @@
 \usepackage{listings}%代码插入宏
 \usepackage[titles]{tocloft}%目录设置宏
 \usepackage{booktabs}%设置表格
-\usepackage{caption2}
+\usepackage{caption2}%标题设置宏
 \addbibresource{refs/thesis-ref.bib}%参考文献数据库文件
 
 %ctex宏样式全局设置
 \ctexset{
-	section/format += \raggedright,
+	chapter = {
+		number =  \arabic{chapter},
+		format = \centering \zihao{3} \heiti,
+	},
+	section/format += \raggedright \zihao{4},
+	subsection/format += \raggedright \zihao{-4} \songti \textbf,
+	subsection/format +=  \raggedright \zihao{-4},
 	contentsname = 目 \ 录,
 	chapter/fixbeforeskip = true,
-	part/fixbeforeskip = true
 }
+
+%定义字体Arial
 \newfontfamily{\myarial}{Arial}
 %listings宏代码样式设置
 \lstset{
@@ -36,7 +43,7 @@
 }
 \renewcommand{\thefigure}{\thechapter-\arabic{figure}}%标题序号设置
 \renewcommand{\captionlabeldelim}{~}
-\renewcommand{\captionfont}{\normalsize \heiti} 
+\renewcommand{\captionfont}{\small \heiti} 
 \hypersetup{hidelinks}%设置跳转链接样式
 \geometry{top=3cm,bottom=2cm,left=2.5cm,right=2.5cm}%设置纸张
 \setmainfont{Times New Roman}%设置默认应为字体
