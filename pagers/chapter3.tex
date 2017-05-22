@@ -1,0 +1,37 @@
+\chapter{基因组浏览器环境搭建与配置}
+	\chaptermark{基因组浏览器环境搭建与配置}
+	\section{GBrowse搭建与配置}
+	虽然计算机病毒危害大，传播快，但是只要普通用户能够树立正确的防范意识，积极做好各种计算机病毒防范措施，还是可以在很大程度上避免病毒对计算机造成的危害，确保互联网的安全。虽然说新病毒层出不穷，病毒也越来越隐蔽，现有的计算机操作系统本身也还存在着一定的缺陷和漏洞，很多新型的病毒能够利用这些漏洞在互联网中传播。但是只要每一个用户都能够提高反病毒的警惕性，通过科学有效的病毒防御方法，新出现的各种病毒就不会对用户造成大的威胁。当我们的计算机发现病毒之后，我们所安装的反病毒防御系统能够第一时间展开防御。我们有理由相信，随着病毒防御技术的不断提升以及用户病毒防范意识的提升，计算机病毒的生存空间必然会越来越小。
+	\subsection{服务端平台选取及环境需求}
+	虽然计算机病毒危害大，传播快，但是只要普通用户能够树立正确的防范意识，积极做好各种计算机病毒防范措施，还是可以在很大程度上避免病毒对计算机造成的危害，确保互联网的安全。虽然说新病毒层出不穷，病毒也越来越隐蔽，现有的计算机操作系统本身也还存在着一定的缺陷和漏洞，很多新型的病毒能够利用这些漏洞在互联网中传播。但是只要每一个用户都能够提高反病毒的警惕性，通过科学有效的病毒防御方法，新出现的各种病毒就不会对用户造成大的威胁。当我们的计算机发现病毒之后，我们所安装的反病毒防御系统能够第一时间展开防御。我们有理由相信，随着病毒防御技术的不断提升以及用户病毒防范意识的提升，计算机病毒的生存空间必然会越来越小。
+	\subsection{源码编译安装Apache与MySQL}
+		\subsubsection{（1）数学公式}
+		
+		\subsubsection{（2）源码编译的步骤}
+		
+		\begin{lstlisting}[language=bash]
+		groupadd apache
+		useradd -g apache apache -s /bin/false
+		groupadd mysql
+		useradd -g mysql mysql -s /bin/false
+		\end{lstlisting}
+		\begin{table}[!htbp]
+			\centering
+			\begin{tabular}{ll}	
+				\toprule
+				选项名称& 含义\\
+				\midrule
+				--build&定义正在构建工具的系统的系统类型。它默认为脚本的结果 config.guess。\\
+				--host&定义服务器运行的系统的系统类型。 HOST默认为BUILD。\\
+				--target&为系统类型TARGET构建编译器 。它默认为HOST。\\
+				--prefix& 指定Apache的安装目录前缀\\
+				--enable-module&相应的模块将构建为DSO模块\\
+				--enable-deflate&开启网页压缩\\
+				--enable-rewrite&开启http重写\\
+				--enable-file-cache&开启文件缓存\\
+				--enable-cache&开启缓存\\
+				\bottomrule
+			\end{tabular}
+		\caption{Apache选项参数}
+		\end{table}
+	
