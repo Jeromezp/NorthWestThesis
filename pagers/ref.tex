@@ -1,9 +1,10 @@
+\fancypagestyle{plain}{
+	\fancyhf{}
+	\fancyhead[CE]{\hfstyle{参考文献}}
+	\fancyhead[CO]{\hfstyle{参考文献}}
+	\fancyfoot[C]{\hfstyle{-\thepage-}}
+}
 \addcontentsline{toc}{chapter}{参考文献}
 \nocite{*}
 \printbibliography[title=参考文献]
-\fancypagestyle{plain}{
-	\fancyhf{}
-	\fancyhead[CE]{参考文献}
-	\fancyhead[CO]{参考文献}
-	\fancyfoot[C]{-\thepage-}
-}
+\thispagestyle{plain}

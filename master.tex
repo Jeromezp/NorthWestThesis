@@ -13,6 +13,7 @@
 \usepackage[titles]{tocloft}%目录设置宏
 \usepackage{booktabs}%设置表格
 \usepackage{caption}%标题设置宏
+\usepackage{amsmath}%数学宏包
 \addbibresource{refs/thesis-ref.bib}%参考文献数据库文件
 
 %ctex宏样式全局设置
@@ -23,6 +24,7 @@
 		fixbeforeskip = true,
 		beforeskip = 7.2pt,
 		afterskip = 7.2pt,
+		pagestyle = mainbodyhd
 	},
 	section= {
 		format += \raggedright \zihao{4},
@@ -36,7 +38,15 @@
 	contentsname = 目 \ 录,
 }
 
+%空白页命令
+\newcommand\blankpage{
+	\newpage
+	~\thispagestyle{empty}
+	\newpage
+}
 
+%页眉页脚样式
+\newcommand\hfstyle[1]{\songti \small{#1}}
 %定义字体Arial
 \newfontfamily{\myarial}{Arial}
 %listings宏代码样式设置
@@ -80,60 +90,56 @@
 	\hb@xt@\@tempdima{\@cftbsnum #1\@cftasnum\hfil}\@cftasnumb}
 \makeatother
 
+%设置目录页眉页脚
+\fancypagestyle{cataloguehd}{
+	\fancyhf{}
+	\fancyfoot[C]{\thepage}
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0pt}
+}
+%正文部分页眉页脚
+\fancypagestyle{mainbodyhd}{
+	\fancyhf{}
+	\fancyhead[CE]{\hfstyle{\thtopic}}
+	\fancyhead[CO]{\hfstyle{\leftmark}}
+	\fancyfoot[C]{\hfstyle{-\thepage-}}
+	\renewcommand{\headrulewidth}{0.4pt}
+	\renewcommand{\footrulewidth}{0pt}
+}
+
+\renewcommand{\theequation}{\thechapter-\arabic{equation}}
+%\numberwithin{equation}{chapter}
+\graphicspath{{figures/}}
 
 \begin{document}
 	%页面信息
 	\include{pagers/message}
-	%设置页面信息
-	\graphicspath{{figures/}}
 	
 	%封面
 	\include{pagers/cover}
 	
 	%摘要（中英文)
 	\include{pagers/abstractc}
+
 	\include{pagers/abstracte}
 	
 	%设置页脚为罗马字体
 	\pagenumbering{Roman}
-	
+	%设置目录页
+	\pagestyle{cataloguehd}
 	\tableofcontents
-	
-	%设置目录页样式（第二页）
-	\fancypagestyle{plain}{
-		\fancyhf{}
-		\fancyfoot[C]{ \thepage}
-		\renewcommand{\headrulewidth}{0pt}
-		\renewcommand{\footrulewidth}{0pt}
-	}
-	\pagestyle{plain}
 	\clearpage
-	
-	%\设置页眉样式
-	\pagestyle{fancy}
-	\fancyhf{}
-	\fancyhead[CE]{\thtopic}
-	\fancyhead[CO]{\leftmark}
-	\fancyfoot[C]{-\thepage-}
-		\renewcommand{\headrulewidth}{0.4pt}
-	
-	%自定义页面样式
-	\fancypagestyle{plain}{
-		\fancyhf{}
-		\fancyhead[CE]{\thtopic}
-		\fancyhead[CO]{\leftmark}
-		\fancyfoot[C]{-\thepage-}
-	}
-
 	%设置正文页面
 	\pagenumbering{arabic}
+	%\设置正文页眉样式
+	\pagestyle{mainbodyhd}
 	%绪论
 	\include{pagers/intro}
 	
 	%论文主体内容
 	\include{pagers/chapter2}
 	\include{pagers/chapter3}
-	%\include{pagers/chapter4}
+	\include{pagers/chapter4}
 	%\include{pagers/chapter5}
 	%\include{pagers/chapter6}
 	\newpage
