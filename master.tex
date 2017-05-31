@@ -62,12 +62,19 @@
 }
 
 %caption设置
-\DeclareCaptionLabelFormat{minus}{\thechapter-\arabic{figure}}
+%caption设置
+\DeclareCaptionLabelFormat{figureminus}{#1\thechapter-\arabic{figure}}
+\DeclareCaptionLabelFormat{tableminus}{#1\thechapter-\arabic{table}}
 \DeclareCaptionFont{heiti}{\heiti}
-\captionsetup{
+\captionsetup[figure]{
 	font = {small,heiti},
 	labelsep = space,
-	labelformat = minus,
+	labelformat = figureminus,
+}
+\captionsetup[table]{
+	font = {small,heiti},
+	labelsep = space,
+	labelformat = tableminus,
 }
 
 \hypersetup{hidelinks}%设置跳转链接样式
@@ -93,20 +100,10 @@
 %设置目录页眉页脚
 \fancypagestyle{cataloguehd}{
 	\fancyhf{}
-	\fancyfoot[C]{\thepage}
+	\fancyfoot[C]{\small \thepage}
 	\renewcommand{\headrulewidth}{0pt}
 	\renewcommand{\footrulewidth}{0pt}
 }
-%正文部分页眉页脚
-\fancypagestyle{mainbodyhd}{
-	\fancyhf{}
-	\fancyhead[CE]{\hfstyle{\thtopic}}
-	\fancyhead[CO]{\hfstyle{\leftmark}}
-	\fancyfoot[C]{\hfstyle{-\thepage-}}
-	\renewcommand{\headrulewidth}{0.4pt}
-	\renewcommand{\footrulewidth}{0pt}
-}
-
 \renewcommand{\theequation}{\thechapter-\arabic{equation}}
 %\numberwithin{equation}{chapter}
 \graphicspath{{figures/}}
@@ -117,11 +114,14 @@
 	
 	%封面
 	\include{pagers/cover}
+	\blankpage
 	
 	%摘要（中英文)
 	\include{pagers/abstractc}
+	\blankpage
 
 	\include{pagers/abstracte}
+	\blankpage
 	
 	%设置页脚为罗马字体
 	\pagenumbering{Roman}
@@ -132,7 +132,14 @@
 	%设置正文页面
 	\pagenumbering{arabic}
 	%\设置正文页眉样式
-	\pagestyle{mainbodyhd}
+	\fancypagestyle{plain}{
+		\fancyhf{}
+		\fancyhead[CE]{\hfstyle{\thtopic}}
+		\fancyhead[CO]{\hfstyle{\leftmark}}
+		\fancyfoot[C]{\hfstyle{-\thepage-}}
+		\renewcommand{\headrulewidth}{0.4pt}
+	}
+	\pagestyle{plain}
 	%绪论
 	\include{pagers/intro}
 	
